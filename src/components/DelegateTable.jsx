@@ -11,36 +11,13 @@ import {
 } from "@/components/ui/table";
 import { Edit2, Trash2 } from "lucide-react";
 
-interface Delegate {
-  id: string;
-  name: string;
-  idNumber: string;
-  phone: string;
-  project: string;
-  city: string;
-  supervisor: string;
-  status: "active" | "inactive" | "on_leave";
-}
-
-interface DelegateTableProps {
-  delegates: Delegate[];
-  isLoading?: boolean;
-  onEdit?: (delegate: Delegate) => void;
-  onDelete?: (id: string) => void;
-}
-
 const statusConfig = {
   active: { label: "نشط", className: "bg-green-100 text-green-800" },
   inactive: { label: "غير نشط", className: "bg-gray-100 text-gray-800" },
   on_leave: { label: "في إجازة", className: "bg-yellow-100 text-yellow-800" },
 };
 
-export default function DelegateTable({
-  delegates,
-  isLoading,
-  onEdit,
-  onDelete,
-}: DelegateTableProps) {
+export default function DelegateTable({ delegates = [], isLoading, onEdit, onDelete }) {
   if (isLoading) {
     return (
       <Card className="p-6">
@@ -56,9 +33,7 @@ export default function DelegateTable({
       <Card className="p-6">
         <div className="flex flex-col items-center justify-center py-12">
           <p className="text-lg font-medium text-foreground">لا توجد بيانات</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            لم يتم العثور على أي مناديب في النظام
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">لم يتم العثور على أي مناديب في النظام</p>
         </div>
       </Card>
     );
@@ -82,12 +57,9 @@ export default function DelegateTable({
           </TableHeader>
           <TableBody>
             {delegates.map((delegate) => {
-              const statusInfo = statusConfig[delegate.status];
+              const statusInfo = statusConfig[delegate.status] || statusConfig.inactive;
               return (
-                <TableRow
-                  key={delegate.id}
-                  className="hover:bg-secondary/30 transition-colors"
-                >
+                <TableRow key={delegate.id} className="hover:bg-secondary/30 transition-colors">
                   <TableCell className="font-medium">{delegate.name}</TableCell>
                   <TableCell className="text-sm">{delegate.idNumber}</TableCell>
                   <TableCell className="text-sm">{delegate.phone}</TableCell>
@@ -95,25 +67,14 @@ export default function DelegateTable({
                   <TableCell className="text-sm">{delegate.city}</TableCell>
                   <TableCell className="text-sm">{delegate.supervisor}</TableCell>
                   <TableCell>
-                    <Badge className={statusInfo.className}>
-                      {statusInfo.label}
-                    </Badge>
+                    <Badge className={statusInfo.className}>{statusInfo.label}</Badge>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onEdit?.(delegate)}
-                      >
+                      <Button variant="ghost" size="sm" onClick={() => onEdit?.(delegate)}>
                         <Edit2 className="h-4 w-4" />
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-600 hover:text-red-700"
-                        onClick={() => onDelete?.(delegate.id)}
-                      >
+                      <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700" onClick={() => onDelete?.(delegate.id)}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>

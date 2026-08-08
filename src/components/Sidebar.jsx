@@ -17,13 +17,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface SidebarProps {
-  isOpen: boolean;
-  onClose?: () => void;
-  activeItem?: string;
-  onItemClick?: (item: string) => void;
-}
-
 const menuItems = [
   { id: "dashboard", label: "لوحة التحكم", icon: LayoutDashboard },
   { id: "delegates", label: "إدارة المناديب", icon: Users },
@@ -39,23 +32,12 @@ const menuItems = [
   { id: "settings", label: "إعدادات النظام", icon: Settings },
 ];
 
-export default function Sidebar({
-  isOpen,
-  onClose,
-  activeItem = "dashboard",
-  onItemClick,
-}: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, activeItem = "dashboard", onItemClick }) {
   return (
     <>
-      {/* Mobile Overlay */}
       {isOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 z-30 bg-black/50 lg:hidden" onClick={onClose} />
       )}
-
-      {/* Sidebar */}
       <aside
         className={cn(
           "fixed right-0 top-0 z-40 h-screen w-64 border-l border-border bg-white transition-transform duration-300 ease-in-out lg:translate-x-0",
@@ -68,7 +50,6 @@ export default function Sidebar({
             <X className="h-5 w-5" />
           </Button>
         </div>
-
         <nav className="space-y-1 p-4 overflow-y-auto h-[calc(100vh-4rem)]">
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -79,9 +60,7 @@ export default function Sidebar({
                 variant={isActive ? "default" : "ghost"}
                 className={cn(
                   "w-full justify-start gap-3 text-right my-1",
-                  isActive
-                    ? "bg-primary text-white shadow-md hover:bg-primary/90"
-                    : "text-foreground hover:bg-secondary"
+                  isActive ? "bg-primary text-white shadow-md hover:bg-primary/90" : "text-foreground hover:bg-secondary"
                 )}
                 onClick={() => {
                   onItemClick?.(item.id);

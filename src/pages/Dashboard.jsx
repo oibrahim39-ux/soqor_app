@@ -1,12 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Users, Truck, AlertTriangle, Wallet, Plus } from "lucide-react";
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
-import StatCard from "@/components/StatCard";
-import DelegateTable from "@/components/DelegateTable";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
+import StatCard from "../components/StatCard";
+import DelegateTable from "../components/DelegateTable";
+import { Button } from "../components/ui/button";
+import { Card } from "../components/ui/card";
 
 const mockDelegates = [
   {
@@ -17,7 +16,7 @@ const mockDelegates = [
     project: "هنقرستيشن",
     city: "الرياض",
     supervisor: "علي محمد",
-    status: "active" as const,
+    status: "active",
   },
   {
     id: "2",
@@ -27,7 +26,7 @@ const mockDelegates = [
     project: "جاهز",
     city: "الرياض",
     supervisor: "سارة أحمد",
-    status: "active" as const,
+    status: "active",
   },
   {
     id: "3",
@@ -37,38 +36,33 @@ const mockDelegates = [
     project: "هنقرستيشن",
     city: "الدمام",
     supervisor: "محمود علي",
-    status: "on_leave" as const,
+    status: "on_leave",
   },
 ];
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("all");
 
   return (
     <div className="flex h-screen flex-col bg-background">
-      {/* Header */}
       <Header onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
         <Sidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
-          activeItem="delegates"
+          activeItem="dashboard"
         />
 
-        {/* Main Content */}
-        <main className="flex-1 overflow-auto">
-          <div className="space-y-6 p-6">
-            {/* Page Header */}
+        <main className="flex-1 overflow-auto p-6">
+          <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-3xl font-bold text-foreground">
                   إدارة المناديب والأسطول
                 </h1>
                 <p className="mt-1 text-muted-foreground">
-                  عرض ومتابعة كافة بيانات المناديب المرتبطة بـ Supabase
+                  متابعة كافة بيانات الأسطول والعمليات
                 </p>
               </div>
               <Button className="gap-2">
@@ -77,7 +71,6 @@ export default function Dashboard() {
               </Button>
             </div>
 
-            {/* Stats Grid */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <StatCard
                 title="إجمالي المناديب"
@@ -109,36 +102,9 @@ export default function Dashboard() {
               />
             </div>
 
-            {/* Tabs & Table */}
-            <Card>
-              <div className="border-b border-border p-6">
-                <Tabs value={activeTab} onValueChange={setActiveTab}>
-                  <TabsList className="bg-secondary/50">
-                    <TabsTrigger value="all">كل المناديب</TabsTrigger>
-                    <TabsTrigger value="active">النشطون</TabsTrigger>
-                    <TabsTrigger value="inactive">غير النشطين</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </div>
-              <div className="p-6">
-                <DelegateTable delegates={mockDelegates} />
-              </div>
+            <Card className="p-6">
+              <DelegateTable delegates={mockDelegates} />
             </Card>
-
-            {/* Filter Chips */}
-            <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-sm text-muted-foreground">الفلاتر:</span>
-              {["هنقرستيشن", "جاهز", "كيتا"].map((project) => (
-                <Button
-                  key={project}
-                  variant="outline"
-                  size="sm"
-                  className="rounded-full"
-                >
-                  {project}
-                </Button>
-              ))}
-            </div>
           </div>
         </main>
       </div>
